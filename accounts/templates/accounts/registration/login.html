@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        <table>
+            <tr>
+                <td>{{ form.username.label_tag }}</td>
+                <td>{{ form.username }}</td>
+            </tr>
+            <tr>
+                <td>{{ form.password.label_tag }}</td>
+                <td>{{ form.password }}</td>
+            </tr>
+        </table>
+        <input type="submit" value="Sign in">
+    </form>
+    <a href="{% url 'homepage' %}">Homepage</a>
+    <a href="{% url 'accounts:user-create' %}"}>Register now</a>
+
+{% endblock %}
