@@ -6,7 +6,7 @@ Create an account
     <h1>Registration</h1>
     <form method="post">
     {% csrf_token %}
-    {{ form }}
+    {{ form.as_p }}
     <input type="submit" value="Submit">
     </form>
     <a href="{% url 'homepage' %}">Homepage</a>

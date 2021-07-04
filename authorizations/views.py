@@ -4,7 +4,7 @@ from django.urls import reverse_lazy
 from django.views.generic import FormView, CreateView, ListView
 from django.views.generic.detail import DetailView
 from authorizations.models import Authorizations
-from .forms import AccountForm
+from .forms import AuthorizationForm
 
 # Create your views here.
 
@@ -18,7 +18,7 @@ class AuthorizationCreate(CreateView):
     model = Authorizations
     template_name = 'authorizations/authorization_create.html'
     success_url = reverse_lazy('homepage')
-    form_class = AccountForm
+    form_class = AuthorizationForm
 
 
 class AuthorizationList(ListView):

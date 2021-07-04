@@ -1,13 +1,10 @@
 from django.db import models
+from accounts.models import Profile
 # Create your models here.
 
 
 class Authorizations(models.Model):
-    email = models.CharField(max_length=32)
-    password = models.CharField(max_length=32)
-    identifier = models.CharField(max_length=32)
-    public_key = models.TextField()
-#    issuer = models.ForeignKey()
+    issuer = models.ForeignKey(Profile, on_delete=models.CASCADE)
     server = models.CharField(max_length=32)
     client = models.CharField(max_length=32)
     start_validity = models.DateTimeField()

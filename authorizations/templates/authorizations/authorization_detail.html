@@ -3,5 +3,6 @@
 Account detail
 {% endblock %}
 {% block content %}
-{{ object.pk }} - {{ object.identifier }} - {{ object.public_key }}
+    {{ object.pk }} - {{ object.issuer }} - {{ object.server }} - {{ object.client }} -
+    {{ object.start_validity }} - {{ object.expiration_time }}
 {% endblock %}

@@ -5,6 +5,7 @@ Account: List
 {% block content %}
     <h1>List Profile</h1>
     {% for object in object_list %}
-    {{ object.identifier}} -- {{ object.public_key}}
+        {{ object.pk }} - {{ object.issuer }} - {{ object.server }} - {{ object.client }} -
+        {{ object.start_validity }} - {{ object.expiration_time }}
     {% endfor %}
 {% endblock %}
