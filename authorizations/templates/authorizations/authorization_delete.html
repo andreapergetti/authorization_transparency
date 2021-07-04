@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}
+Authorization: Delete
+{% endblock %}
+{% block content %}
+    <h1>Authorization delete</h1>
+    <h2>You are going to delete this Authorization, are you sure?</h2>
+    <p>{{ object.issuer }} - {{ object.server }} - {{ object.client }} -
+    {{ object.start_validity }} - {{ object.expiration_time }}</p>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <a href="{% url 'authorizations:authorization_list' %}">Go back</a>
+        <input type="submit" value="Confirm">
+    </form>
+{% endblock %}
