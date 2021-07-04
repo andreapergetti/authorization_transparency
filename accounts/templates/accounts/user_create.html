@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 {% block title %}
 User: Create
 {% endblock %}
@@ -10,7 +11,7 @@ User: Create
 
     <form method="post">
     {% csrf_token %}
-    {{ form.as_p }}
+    {{ form|crispy }}
     <input type="submit" name="Create new user" value="Submit">
     </form>
     <a href="{% url 'homepage' %}">Homepage</a>

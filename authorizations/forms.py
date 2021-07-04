@@ -1,11 +1,19 @@
 import datetime
 import logging
+
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Submit
 from django.core.exceptions import ValidationError
 from django.forms import ModelForm
 from .models import Authorizations
 
 
 class AuthorizationForm(ModelForm):
+    helper = FormHelper()
+    helper.form_id = 'register-form'
+    helper.form_method = 'POST'
+    helper.add_input(Submit('submit', 'Submit'))
+
     class Meta:
         model = Authorizations
         fields = ('server', 'client', 'start_validity', 'expiration_time')
@@ -16,10 +24,8 @@ class AuthorizationForm(ModelForm):
     def clean(self):
         super().clean()
         expiration_time = self.cleaned_data.get('expiration_time')
-        print(self.cleaned_data)
         start_validity = self.cleaned_data.get('start_validity')
         time_now = datetime.datetime.now(datetime.timezone.utc)
-        print(time_now)
         if expiration_time <= start_validity:
             raise ValidationError("The expiration time is before the start validity time")
         if expiration_time <= time_now:
