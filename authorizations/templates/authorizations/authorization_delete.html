@@ -10,8 +10,8 @@ Authorization: Delete
     {{ object.start_validity }} - {{ object.expiration_time }}</p>
     <form method="post">
         {% csrf_token %}
-        {{ form.crispy }}
-        <a href="{% url 'authorizations:authorization_list' %}">Go back</a>
+        {{ form|crispy }}
+        <a href="{% url 'authorizations:authorization_list' %}">Cancel</a>
         <input type="submit" value="Confirm">
     </form>
 {% endblock %}

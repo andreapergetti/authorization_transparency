@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
@@ -9,24 +10,24 @@ from .forms import AuthorizationForm
 # Create your views here.
 
 
-class AuthorizationDetail(DetailView):
+class AuthorizationDetail(LoginRequiredMixin, DetailView):
     model = Authorizations
     template_name = 'authorizations/authorization_detail.html'
 
 
-class AuthorizationCreate(CreateView):
+class AuthorizationCreate(LoginRequiredMixin, CreateView):
     model = Authorizations
     template_name = 'authorizations/authorization_create.html'
     success_url = reverse_lazy('homepage')
     form_class = AuthorizationForm
 
 
-class AuthorizationDelete(DeleteView):
+class AuthorizationDelete(LoginRequiredMixin, DeleteView):
     model = Authorizations
     template_name = 'authorizations/authorization_delete.html'
     success_url = reverse_lazy('authorizations:authorization_list')
 
 
-class AuthorizationList(ListView):
+class AuthorizationList(LoginRequiredMixin, ListView):
     model = Authorizations
     template_name = 'authorizations/authorization_list.html'

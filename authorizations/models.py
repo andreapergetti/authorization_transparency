@@ -4,7 +4,7 @@ from accounts.models import Profile
 
 
 class Authorizations(models.Model):
-    issuer = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    issuer = models.ForeignKey(Profile, on_delete=models.PROTECT)
     server = models.CharField(max_length=32)
     client = models.CharField(max_length=32)
     start_validity = models.DateTimeField()
