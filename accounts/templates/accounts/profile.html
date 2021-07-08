@@ -1,4 +1,10 @@
 {% extends 'base.html' %}
+{% load static %}
+{% block head %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+    <script src="{% static 'js/sort.js' %}"></script>
+{% endblock %}
 {% block title %}
     Profile
 {% endblock %}
@@ -8,28 +14,37 @@
 {% endblock %}
 {% block content %}
     <h3>List authorization</h3>
- <table style="width:100%">
-  <tr>
-      <th>ISSUER</th>
-      <th>SERVER</th>
-      <th>CLIENT</th>
-      <th>START</th>
-      <th>END</th>
-  </tr>
-     {% for object in object_list %}
-  <tr>
-      <td style="text-align: center">{{ object.issuer }}</td>
-      <td style="text-align: center">{{ object.server }}</td>
-      <td style="text-align: center">{{ object.client }}</td>
-      <td style="text-align: center">{{ object.start_validity }}</td>
-      <td style="text-align: center">{{ object.expiration_time }}</td>
-  </tr>
-     {% endfor %}
-</table>
-    {% for object in object_list %}
-        <p>"issuer": {{ object.issuer }}, "server": {{ object.server }}, "client": {{ object.client }},
-            "not before time": {{ object.start_validity }}, "expiration time": {{ object.expiration_time }} </p>
-    {% endfor %}
+
+    <div style="overflow-x: auto">
+        <table cellspacing="0" cellpadding="5" border="1" style="width:100%" id="myTable">
+            <thead>
+            <tr>
+                <th>ISSUER</th>
+                <th>SERVER</th>
+                <th>CLIENT</th>
+                <th>START</th>
+                <th>END</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for object in object_list %}
+                <tr>
+                    <td style="text-align: center">{{ object.issuer }}</td>
+                    <td style="text-align: center">{{ object.server }}</td>
+                    <td style="text-align: center">{{ object.client }}</td>
+                    <td style="text-align: center">{{ object.start_validity }}</td>
+                    <td style="text-align: center">{{ object.expiration_time }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
     <a href="{% url 'homepage' %}">Homepage</a>
     <a href="{% url 'authorizations:authorization_create' %}">Create an authorization</a>
 {% endblock %}
+
+ {% for object in object_list %}
+        <p>"issuer": {{ object.issuer }}, "server": {{ object.server }}, "client": {{ object.client }},
+            "not before time": {{ object.start_validity }}, "expiration time": {{ object.expiration_time }} </p>
+    {% endfor %}

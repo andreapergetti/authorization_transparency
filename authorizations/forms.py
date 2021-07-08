@@ -5,10 +5,14 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 from django.core.exceptions import ValidationError
 from django.forms import ModelForm
+from django import forms
 from .models import Authorizations
 
 
 class AuthorizationForm(ModelForm):
+    start_validity = forms.DateTimeField(widget=forms.DateTimeInput(format='%d/%m/%Y %H:%M'))
+    expiration_time = forms.DateTimeField(widget=forms.DateTimeInput(format='%d/%m/%Y %H:%M'))
+
     helper = FormHelper()
     helper.form_id = 'register-form'
     helper.form_method = 'POST'
