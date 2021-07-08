@@ -18,8 +18,12 @@ class AuthorizationDetail(LoginRequiredMixin, DetailView):
 class AuthorizationCreate(LoginRequiredMixin, CreateView):
     model = Authorizations
     template_name = 'authorizations/authorization_create.html'
-    success_url = reverse_lazy('homepage')
+    success_url = reverse_lazy('accounts:profile')
     form_class = AuthorizationForm
+
+    def form_valid(self, form):
+        form.instance.issuer_id = self.request.user.id
+        return super().form_valid(form)
 
 
 class AuthorizationDelete(LoginRequiredMixin, DeleteView):

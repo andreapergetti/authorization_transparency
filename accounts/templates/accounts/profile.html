@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}
+    Profile
+{% endblock %}
+{% block header %}
+    <h2>Profile: {{ user.username }}</h2>
+    <hr>
+{% endblock %}
+{% block content %}
+    <h3>List authorization</h3>
+ <table style="width:100%">
+  <tr>
+      <th>ISSUER</th>
+      <th>SERVER</th>
+      <th>CLIENT</th>
+      <th>START</th>
+      <th>END</th>
+  </tr>
+     {% for object in object_list %}
+  <tr>
+      <td style="text-align: center">{{ object.issuer }}</td>
+      <td style="text-align: center">{{ object.server }}</td>
+      <td style="text-align: center">{{ object.client }}</td>
+      <td style="text-align: center">{{ object.start_validity }}</td>
+      <td style="text-align: center">{{ object.expiration_time }}</td>
+  </tr>
+     {% endfor %}
+</table>
+    {% for object in object_list %}
+        <p>"issuer": {{ object.issuer }}, "server": {{ object.server }}, "client": {{ object.client }},
+            "not before time": {{ object.start_validity }}, "expiration time": {{ object.expiration_time }} </p>
+    {% endfor %}
+    <a href="{% url 'homepage' %}">Homepage</a>
+    <a href="{% url 'authorizations:authorization_create' %}">Create an authorization</a>
+{% endblock %}
