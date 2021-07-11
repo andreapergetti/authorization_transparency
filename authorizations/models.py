@@ -9,3 +9,6 @@ class Authorizations(models.Model):
     client = models.CharField(max_length=32)
     start_validity = models.DateTimeField()
     expiration_time = models.DateTimeField()
+
+    class Meta:
+        verbose_name_plural = 'authorizations'
