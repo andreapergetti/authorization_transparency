@@ -1,8 +1,9 @@
+import datetime
 import json
 
 from django.contrib import admin
 from django.core.serializers.json import DjangoJSONEncoder
-from django.db.models import Count
+from django.db.models import Count, Sum
 from django.db.models.functions import TruncDay
 from django.http import JsonResponse
 from django.urls import path
@@ -34,10 +35,12 @@ class AuthorizationReleaseAdmin(admin.ModelAdmin):
             Authorizations.objects.annotate(date=TruncDay("start_validity")).values("date").annotate(
                 y=Count("id")).order_by("-date")
         )
+        expiration_data = (Authorizations.objects.filter(expiration_time__gte=datetime.datetime.now(
+            datetime.timezone.utc)).count())
 
         # Serialize and attach the chart data to the template context
         as_json = json.dumps(list(chart_data), cls=DjangoJSONEncoder)
-        extra_context = extra_context or {"chart_data": as_json}
+        extra_context = extra_context or {"chart_data": as_json, "expiration_data": expiration_data}
 
         # Call the superclass changelist_view to render the page
         print(extra_context)

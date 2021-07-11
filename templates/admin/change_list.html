@@ -76,6 +76,9 @@ const btn = document.querySelector('#reload');
         <canvas style="margin-bottom: 30px; width: 60%; height: 50%;" id="myChart"></canvas>
     </div>
     <button id="reload" style="margin: 1rem 0">Reload chart data</button>
+    <div style="width: 80%;">
+        Authorizations currently active: {{ expiration_data }}
+    </div>
 
     <!-- Render the rest of the ChangeList view -->
     {{ block.super }}
