@@ -10,7 +10,7 @@ from .models import Authorizations
 
 
 class AuthorizationForm(ModelForm):
-    start_validity = forms.DateTimeField(help_text='MM/dd/yyyy HH:mm')
+    start_validity = forms.DateTimeField(help_text='MM/dd/yyyy HH:mm',)
     expiration_time = forms.DateTimeField(help_text='MM/dd/yyyy HH:mm')
 
     helper = FormHelper()
