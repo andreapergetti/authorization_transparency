@@ -4,27 +4,27 @@ Homepage
 {% endblock %}
 
 {% block header %}
-    <h1>My site</h1>
+    <h1>Authorization Transparency</h1>
     {% if user.is_authenticated %}
         <p>Hello {{ user.username }}</p>
-        <form action="{% url 'accounts:profile' %}">
+        <form action="{% url 'accounts:profile' %}" style="display: inline">
             <button type="submit">
                 Profile
             </button>
         </form>
-        <form action="{% url 'accounts:logout' %}">
+        <form action="{% url 'accounts:logout' %}" style="display: inline">
             <button type="submit">
                 Logout
             </button>
         </form>
     {% else %}
-        <form action="{% url 'accounts:login' %}">
+        <form action="{% url 'accounts:login' %}" style="display: inline">
             <button type="submit">
                 Login
             </button>
         </form>
-        <form action="{% url 'accounts:user-create' %}">
-            <button type="submit">
+        <form action="{% url 'accounts:user-create' %}" style="display: inline">
+            <button type="submit" >
                 Register
             </button>
         </form>
@@ -34,6 +34,9 @@ Homepage
 
 {% block content %}
     <h1>This is the homepage</h1>
+    <h3>What is certificate transparency?</h3>
+    <p>The purpose of this project is to create an ecosystem that makes the issuance of access permission
+        to servers transparent and verifiable. </p>
     <h3>How it works?</h3>
     <p>Certificate Transparency (CT) sits within a wider ecosystem, Web Public Key Infrastructure.
     Web PKI includes everything needed to issue and verify certificates used for TLS on the web.

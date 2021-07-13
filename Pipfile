@@ -6,6 +6,10 @@ name = "pypi"
 [packages]
 django = "*"
 django-crispy-forms = "*"
+djangorestframework = "*"
+django-rest-auth = "*"
+django-allauth = "*"
+dj-rest-auth = "==2.1.7"
 
 [dev-packages]
 

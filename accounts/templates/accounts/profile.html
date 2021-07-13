@@ -19,7 +19,6 @@
         <table cellspacing="0" cellpadding="5" border="1" style="width:100%" id="myTable">
             <thead>
             <tr>
-                <th>ISSUER</th>
                 <th>SERVER</th>
                 <th>CLIENT</th>
                 <th>START</th>
@@ -29,7 +28,6 @@
             <tbody>
             {% for object in object_list %}
                 <tr>
-                    <td style="text-align: center">{{ object.issuer }}</td>
                     <td style="text-align: center">{{ object.server }}</td>
                     <td style="text-align: center">{{ object.client }}</td>
                     <td style="text-align: center">{{ object.start_validity }}</td>

@@ -20,8 +20,11 @@ from django.contrib.auth import views as auth_views
 from authorization_transparency.views import Homepage
 
 urlpatterns = [
+    path('', Homepage.as_view(), name='homepage'),
     path('authorizations/', include('authorizations.urls')),
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls')),
-    path('', Homepage.as_view(), name='homepage'),
+    path('api/v1/', include('api.urls')),
+    path('api/v1/dj-rest-auth/', include('dj_rest_auth.urls')),
+    path('api/v1/dj-rest-auth/registration/', include('dj_rest_auth.registration.urls')),
 ]
