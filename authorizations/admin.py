@@ -18,13 +18,7 @@ class AuthorizationsAdmin(admin.ModelAdmin):
     search_fields = ['issuer__user__username', 'server', 'client', 'start_validity', 'expiration_time']
 
 
-class MyAuthorizations(Authorizations):
-    class Meta:
-        proxy = True
-
-
 class AuthorizationReleaseAdmin(admin.ModelAdmin):
-#    AuthorizationsAdmin):
     fields = ('issuer', 'server', 'client', 'start_validity', 'expiration_time')
     list_display = ('issuer', 'server', 'client', 'start_validity', 'expiration_time')
     ordering = ('-start_validity',)

@@ -1,5 +1,5 @@
 from django.urls import path
-from accounts.views import UserCreateView, ResetPasswordView, register, ProfileView, userpage
+from accounts.views import UserCreateView, ResetPasswordView, register, ProfileView, userpage, authorization_chart
 from django.contrib.auth import views as auth_views
 
 app_name = 'accounts'
@@ -18,4 +18,5 @@ urlpatterns = [
     path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView, name='password-reset-confirm'),
     path('reset/done', auth_views.PasswordResetCompleteView, name='password-reset-complete'),
     path('profile/', userpage, name='profile'),
+    path('profile/statistics/', authorization_chart, name='profile-statistics'),
 ]

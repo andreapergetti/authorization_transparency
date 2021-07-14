@@ -2,7 +2,13 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import PasswordResetView
+from django.core.serializers.json import DjangoJSONEncoder
+from django.db.models import Count
+from django.db.models.functions import TruncDay
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
+import datetime
+import json
 
 # Create your views here.
 from django.urls import reverse_lazy
@@ -58,3 +64,18 @@ class ProfileView(LoginRequiredMixin, ListView):
 
 #    def get_queryset(self):
 #        return Profile.objects.filter(user=self.kwargs['pk'])
+
+
+def authorization_chart(request):
+    chart_data = (
+        Authorizations.objects.filter(issuer__user_id=request.user).annotate(date=TruncDay("start_validity")).values(
+            "date").annotate(y=Count("id")).order_by("-date")
+    )
+    expiration_data = (Authorizations.objects.filter(issuer__user_id=request.user, expiration_time__gte=datetime.
+                                                     datetime.now(datetime.timezone.utc)).count())
+    as_json = json.dumps(list(chart_data), cls=DjangoJSONEncoder)
+    context={
+        'chart_data': as_json,
+        'expiration_data': expiration_data,
+    }
+    return render(request=request, template_name='accounts/profile_statistics.html', context=context)
