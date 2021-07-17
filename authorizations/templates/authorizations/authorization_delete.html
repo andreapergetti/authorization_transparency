@@ -5,13 +5,13 @@ Authorization: Delete
 {% endblock %}
 {% block content %}
     <h1>Authorization delete</h1>
-    <h2>You are going to delete this Authorization, are you sure?</h2>
-    <p>{{ object.issuer }} - {{ object.server }} - {{ object.client }} -
-    {{ object.start_validity }} - {{ object.expiration_time }}</p>
-    <form method="post">
+    <h3>You are going to delete this Authorization, are you sure?</h3>
+    <p>ISSUER: {{ object.issuer }} - SERVER: {{ object.server }} - CLIENT: {{ object.client }} -
+    START VALIDITY: {{ object.start_validity }} - EXPIRATION TIME: {{ object.expiration_time }}</p>
+    <form style="margin: 10px 5px" method="post">
         {% csrf_token %}
         {{ form|crispy }}
-        <a href="{% url 'authorizations:authorization_list' %}">Cancel</a>
-        <input type="submit" value="Confirm">
+        <a href="{% url 'accounts:profile' %}">Cancel</a>
+        <input style="margin: 10px 5px" type="submit" value="Confirm">
     </form>
 {% endblock %}

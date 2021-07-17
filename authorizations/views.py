@@ -1,3 +1,4 @@
+from django import http
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
@@ -14,6 +15,13 @@ class AuthorizationDetail(LoginRequiredMixin, DetailView):
     model = Authorizations
     template_name = 'authorizations/authorization_detail.html'
 
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if self.object.issuer_id == request.user.pk:
+            return render(request=request, template_name=self.template_name, context={'object': self.object})
+        else:
+            return http.HttpResponseForbidden("Cannot delete other's authorization")
+
 
 class AuthorizationCreate(LoginRequiredMixin, CreateView):
     model = Authorizations
@@ -29,7 +37,23 @@ class AuthorizationCreate(LoginRequiredMixin, CreateView):
 class AuthorizationDelete(LoginRequiredMixin, DeleteView):
     model = Authorizations
     template_name = 'authorizations/authorization_delete.html'
-    success_url = reverse_lazy('authorizations:authorization_list')
+    success_url = reverse_lazy('accounts:profile')
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if self.object.issuer_id == request.user.pk:
+            return render(request=request, template_name=self.template_name, context={'object': self.object})
+        else:
+            return http.HttpResponseForbidden("Cannot delete other's authorization")
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if self.object.issuer_id == request.user.pk:
+            success_url = self.get_success_url()
+            self.object.delete()
+            return http.HttpResponseRedirect(success_url)
+        else:
+            return http.HttpResponseForbidden("Cannot delete other's authorization")
 
 
 class AuthorizationList(LoginRequiredMixin, ListView):

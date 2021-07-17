@@ -1,14 +1,15 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 {% block title %}
-Create an account
+Authorization: Create
 {% endblock %}
 {% block content %}
-    <h1>Registration</h1>
-    <form method="post">
+    <h1>Authorization create</h1>
+    <form style="margin: 10px 5px" method="post">
     {% csrf_token %}
     {{ form|crispy }}
-    <input type="submit" value="Submit">
+    <input style="margin: 10px 5px" type="submit" value="Submit">
     </form>
+    <a href="{% url 'accounts:profile' %}">Profile</a>
     <a href="{% url 'homepage' %}">Homepage</a>
 {% endblock %}

@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}
+Profile: Settings
+{% endblock %}
+{% block content %}
+    <h2>Settings : {{ user.username }}</h2>
+    <div style="margin: 25px 5px;">
+    <a href="{% url 'accounts:password-change' %}">Change password</a>
+        <p><b>Email</b>:
+        {% if user.email %}
+            {{ user.email }}
+        {% else %}
+            No email set
+    {% endif %}
+        <a href="{% url 'accounts:email-change' %}">Change email</a> </p>
+        <p><b>Public key</b>:
+            {% if profile.public_key %}
+                {{ profile.public_key }}
+            {% else %}
+                No public key set
+            {% endif %}
+            <a href="{% url 'accounts:public-key-change' %}">Change public key</a> </p>
+    </div>
+    <a href="{% url 'accounts:profile' %}">Profile</a>
+    <a href="{% url 'homepage' %}">Homepage</a>
+{% endblock %}

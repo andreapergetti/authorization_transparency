@@ -1,8 +1,12 @@
 {% extends 'base.html' %}
 {% block title %}
-Account detail
+Authorization: Detail
 {% endblock %}
 {% block content %}
-    {{ object.pk }} - {{ object.issuer }} - {{ object.server }} - {{ object.client }} -
-    {{ object.start_validity }} - {{ object.expiration_time }}
+    <h2>Authorization Detail</h2>
+    <p>ID: {{ object.pk }} - ISSUER: {{ object.issuer }} - SERVER: {{ object.server }} -
+        CLIENT: {{ object.client }} - START VALIDITY: {{ object.start_validity }} -
+        EXPIRATION TIME: {{ object.expiration_time }}</p>
+    <a href="{% url 'accounts:profile' %}">Profile</a>
+    <a href="{% url 'homepage' %}">Homepage</a>
 {% endblock %}

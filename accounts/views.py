@@ -5,7 +5,7 @@ from django.contrib.auth.views import PasswordResetView
 from django.core.serializers.json import DjangoJSONEncoder
 from django.db.models import Count
 from django.db.models.functions import TruncDay
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 import datetime
 import json
@@ -13,7 +13,7 @@ import json
 # Create your views here.
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView
-from accounts.forms import RegisterForm
+from accounts.forms import RegisterForm, EmailChangeForm, PublicKeyChangeForm
 from authorizations.models import Authorizations, Profile
 
 
@@ -35,15 +35,68 @@ def register(request):
     return render(request, 'accounts/user_create.html', {'form': form})
 
 
-class UserCreateView(CreateView):
-    form_class = RegisterForm
-    template_name = 'accounts/user_create.html'
-    success_url = reverse_lazy('homepage')
+@login_required() 
+def email_change(request):
+#    form = EmailChangeForm()
+    if request.method == 'POST':
+        form = EmailChangeForm(request.user, request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect("/accounts/profile/")
+    else:
+        form = EmailChangeForm(request.user)
+    return render(request, 'accounts/email_change.html', {'form': form})
+#        return render_to_response("email_change.html", {'form':form},
+#                                  context_instance=RequestContext(request))
+
+@login_required() 
+def public_key_change(request):
+#    form = PublicKeyChangeForm()
+    if request.method == 'POST':
+        form = PublicKeyChangeForm(request.user, request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect("/accounts/profile/")
+    else:
+        form = PublicKeyChangeForm(request.user)
+        return render(request, 'accounts/public_key_change.html', {'form': form})
+#        return render_to_response("email_change.html", {'form':form},
+#                                  context_instance=RequestContext(request))
 
 
 class ResetPasswordView(PasswordResetView):
     template_name = 'accounts/password_reset.html'
-    success_url = reverse_lazy('accounts:password-reset-done')
+    success_url = reverse_lazy('accounts:password_reset_done')
+    email_template_name = 'accounts/password_reset_email.html'
+
+
+class SelectObjectProfile(ListView):
+    template_name = 'accounts/profile_select.html'
+    success_url = reverse_lazy('authorizations:authorization_delete')
+
+    def get_queryset(self):
+        queryset = Authorizations.objects.filter(issuer=self.request.user.id)
+        return queryset
+
+
+def select_object(request):
+    if request.method == 'POST':
+        print(request.POST)
+        auth_id = request.POST.get('id', False)
+        if auth_id:
+            return redirect('authorizations:authorization_delete', pk=auth_id)
+        else:
+            queryset = Authorizations.objects.filter(issuer=request.user.id)
+            context = {
+                'object_list': queryset
+            }
+            return render(request=request, template_name='accounts/profile_select.html', context=context)
+    else:
+        queryset = Authorizations.objects.filter(issuer=request.user.id)
+        context = {
+            'object_list': queryset
+        }
+        return render(request=request, template_name='accounts/profile_select.html', context=context)
 
 
 @login_required
@@ -57,15 +110,7 @@ def userpage(request):
                   context=context)
 
 
-class ProfileView(LoginRequiredMixin, ListView):
-    model = Authorizations
-    template_name = 'accounts/profile.html'
-#    return render(request=request)
-
-#    def get_queryset(self):
-#        return Profile.objects.filter(user=self.kwargs['pk'])
-
-
+@login_required
 def authorization_chart(request):
     chart_data = (
         Authorizations.objects.filter(issuer__user_id=request.user).annotate(date=TruncDay("start_validity")).values(
@@ -79,3 +124,12 @@ def authorization_chart(request):
         'expiration_data': expiration_data,
     }
     return render(request=request, template_name='accounts/profile_statistics.html', context=context)
+
+@login_required
+def settings(request):
+    profile = Profile.objects.get(user_id=request.user.pk)
+    context = {
+        'user': request.user,
+        'profile': profile
+    }
+    return render(request=request, template_name='accounts/profile_settings.html', context=context)

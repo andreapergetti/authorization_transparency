@@ -22,6 +22,7 @@ class AuthorizationReleaseAdmin(admin.ModelAdmin):
     fields = ('issuer', 'server', 'client', 'start_validity', 'expiration_time')
     list_display = ('issuer', 'server', 'client', 'start_validity', 'expiration_time')
     ordering = ('-start_validity',)
+    search_fields = ['issuer__user__username', 'server', 'client', 'start_validity', 'expiration_time']
 
     def changelist_view(self, request, extra_context=None):
         # Aggregate new subscribers per day

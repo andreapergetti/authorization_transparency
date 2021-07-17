@@ -6,19 +6,21 @@
     <script src="{% static 'js/sort.js' %}"></script>
 {% endblock %}
 {% block title %}
-    Profile
+    Profile: Select authorization
 {% endblock %}
 {% block header %}
-    <h2>Profile: {{ user.username }}</h2>
+    <h2>Profile: Select authorization to delete</h2>
     <hr>
 {% endblock %}
 {% block content %}
     <h3>List authorization</h3>
-
-    <div style="overflow-x: auto; margin: 25px 5px">
+    <form method="post">
+    {% csrf_token %}
+    <div style="overflow-x: auto; margin: 25px 5px;">
         <table cellspacing="0" cellpadding="5" border="1" style="width:80%; margin: 15px 5px;" id="myTable">
             <thead>
             <tr>
+                <th></th>
                 <th>SERVER</th>
                 <th>CLIENT</th>
                 <th>START VALIDITY</th>
@@ -28,6 +30,7 @@
             <tbody>
             {% for object in object_list %}
                 <tr>
+                    <td><input type="radio" name="id" value="{{ object.id }}"></td>
                     <td style="text-align: center">{{ object.server }}</td>
                     <td style="text-align: center">{{ object.client }}</td>
                     <td style="text-align: center">{{ object.start_validity }}</td>
@@ -37,17 +40,10 @@
             </tbody>
         </table>
     </div>
-
-    <a href="{% url 'accounts:profile-statistics' %}">Statistics</a>
-    <a href="{% url 'accounts:profile-settings' %}">Settings</a><br>
-
-    <a href="{% url 'authorizations:authorization_create' %}">Create an authorization</a>
-    <a href="{% url 'accounts:profile-select' %}">Delete an authorization</a><br>
+    <div style="margin-top:0.5cm; margin-bottom:1cm;">
+         <input type="submit" name="todelete" value="Delete"  style="color:red"/>
+    </div>
+    </form>
     <a href="{% url 'homepage' %}">Homepage</a>
-
+    <a href="{% url 'accounts:profile' %}">Profile</a>
 {% endblock %}
-
- {% for object in object_list %}
-        <p>"issuer": {{ object.issuer }}, "server": {{ object.server }}, "client": {{ object.client }},
-            "not before time": {{ object.start_validity }}, "expiration time": {{ object.expiration_time }} </p>
-    {% endfor %}
