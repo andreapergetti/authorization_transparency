@@ -31,7 +31,7 @@ class AuthorizationReleaseAdmin(admin.ModelAdmin):
                 y=Count("id")).order_by("-date")
         )
         expiration_data = (Authorizations.objects.filter(expiration_time__gte=datetime.datetime.now(
-            datetime.timezone.utc)).count())
+            datetime.timezone.utc), start_validity__lte=datetime.datetime.now(datetime.timezone.utc)).count())
 
         # Serialize and attach the chart data to the template context
         as_json = json.dumps(list(chart_data), cls=DjangoJSONEncoder)

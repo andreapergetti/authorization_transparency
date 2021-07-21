@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+    <script src="{% static 'js/sort.js' %}"></script>
+{% endblock %}
+{% block title %}
+    Profile: Select authorization
+{% endblock %}
+{% block header %}
+    <h2>Profile: Select authorization to update</h2>
+    <hr>
+{% endblock %}
+{% block content %}
+    <h3>List authorization</h3>
+    <form method="post">
+        {% csrf_token %}
+        <div style="overflow-x: auto; margin: 25px 5px;">
+            <table cellspacing="0" cellpadding="5" border="1" style="width:80%; margin: 15px 5px;" id="myTable">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>SERVER</th>
+                    <th>CLIENT</th>
+                    <th>START VALIDITY</th>
+                    <th>EXPIRATION TIME</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for object in object_list %}
+                    <tr>
+                        <td><input type="radio" name="id" value="{{ object.id }}"></td>
+                        <td style="text-align: center">{{ object.server }}</td>
+                        <td style="text-align: center">{{ object.client }}</td>
+                        <td style="text-align: center">{{ object.start_validity }}</td>
+                        <td style="text-align: center">{{ object.expiration_time }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div style="margin-top:0.5cm; margin-bottom:1cm;">
+            <input type="submit" name="toupdate" value="Update"/>
+        </div>
+    </form>
+    <a href="{% url 'homepage' %}">Homepage</a>
+    <a href="{% url 'accounts:profile' %}">Profile</a>
+{% endblock %}

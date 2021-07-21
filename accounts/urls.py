@@ -1,6 +1,6 @@
 from django.urls import path, reverse_lazy
-from accounts.views import ResetPasswordView, register, userpage, authorization_chart, settings, SelectObjectProfile, \
-    select_object, email_change, public_key_change
+from accounts.views import ResetPasswordView, register, user_page, authorization_chart, settings, \
+    select_object_delete, select_object_update, email_change, public_key_change
 from django.contrib.auth import views as auth_views
 
 app_name = 'accounts'
@@ -21,8 +21,9 @@ urlpatterns = [
          name='password_reset_confirm'),
     path('reset/done', auth_views.PasswordResetCompleteView.as_view(
         template_name='accounts/password_reset_complete.html'), name='password_reset_complete'),
-    path('profile/', userpage, name='profile'),
-    path('profile/select/', select_object, name='profile-select'),
+    path('profile/', user_page, name='profile'),
+    path('profile/select_delete/', select_object_delete, name='profile-select-delete'),
+    path('profile/select_update/', select_object_update, name='profile-select-update'),
     path('profile/statistics/', authorization_chart, name='profile-statistics'),
     path('profile/settings/', settings, name='profile-settings'),
     path('profile/settings/email_change/', email_change, name='email-change'),

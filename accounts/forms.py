@@ -7,7 +7,7 @@ from .models import Profile
 
 
 class RegisterForm(UserCreationForm):
-    public_key = forms.CharField(required=True, widget=forms.Textarea)
+    public_key = forms.CharField(required=False, widget=forms.Textarea, help_text='PEM format request')
 
     helper = FormHelper()
     helper.form_id = 'register-form'

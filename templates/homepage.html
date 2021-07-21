@@ -1,10 +1,13 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block title %}
 Homepage
 {% endblock %}
 
 {% block header %}
-    <h1>Authorization Transparency</h1>
+    <h1 style="display: inline-block">Authorize me</h1>
+    <img src="{% static "logo.png" %}" alt="logo" style="width: 70px; height: 70px;">
+    <div>
     {% if user.is_authenticated %}
         <p>Hello {{ user.username }}</p>
         <form action="{% url 'accounts:profile' %}" style="display: inline">
@@ -30,17 +33,19 @@ Homepage
         </form>
     {% endif %}
     <hr>
+    </div>
 {% endblock %}
 
 {% block content %}
     <h1>This is the homepage</h1>
-    <h3>What is certificate transparency?</h3>
+    <div style="width: 90%">
+    <h3>What is authorization transparency?</h3>
     <p>The purpose of this project is to create an ecosystem that makes the issuance of access permission
-        to servers transparent and verifiable. </p>
+        to servers transparent and verifiable. You can verify the activity of the Authorization Servers by checking
+        the authorization they issue. In this way is easier to find the Authorization Servers that acts
+        maliciously or that mistakenly issued permission.</p>
     <h3>How it works?</h3>
-    <p>Certificate Transparency (CT) sits within a wider ecosystem, Web Public Key Infrastructure.
-    Web PKI includes everything needed to issue and verify certificates used for TLS on the web.
-    Certificates bind a public cryptographic key to a domain name, similar to how a passport brings
-        together a person's photo and name.</p>
-
+    <p>Authorizations released are log in a Verifiable Data Structure, a Merkle Tree. The log in the Merkle Tree
+        are append-only.</p>
+    </div>
 {% endblock %}

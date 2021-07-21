@@ -70,16 +70,16 @@ class ResetPasswordView(PasswordResetView):
     email_template_name = 'accounts/password_reset_email.html'
 
 
-class SelectObjectProfile(ListView):
-    template_name = 'accounts/profile_select.html'
-    success_url = reverse_lazy('authorizations:authorization_delete')
+#class SelectObjectProfile(ListView):
+#    template_name = 'accounts/profile_select_delete.html'
+#    success_url = reverse_lazy('authorizations:authorization_delete')
 
-    def get_queryset(self):
-        queryset = Authorizations.objects.filter(issuer=self.request.user.id)
-        return queryset
+#    def get_queryset(self):
+#        queryset = Authorizations.objects.filter(issuer=self.request.user.id)
+#        return queryset
 
 
-def select_object(request):
+def select_object_delete(request):
     if request.method == 'POST':
         print(request.POST)
         auth_id = request.POST.get('id', False)
@@ -90,17 +90,37 @@ def select_object(request):
             context = {
                 'object_list': queryset
             }
-            return render(request=request, template_name='accounts/profile_select.html', context=context)
+            return render(request=request, template_name='accounts/profile_select_delete.html', context=context)
     else:
         queryset = Authorizations.objects.filter(issuer=request.user.id)
         context = {
             'object_list': queryset
         }
-        return render(request=request, template_name='accounts/profile_select.html', context=context)
+        return render(request=request, template_name='accounts/profile_select_delete.html', context=context)
+
+
+def select_object_update(request):
+    if request.method == 'POST':
+        print(request.POST)
+        auth_id = request.POST.get('id', False)
+        if auth_id:
+            return redirect('authorizations:authorization_update', pk=auth_id)
+        else:
+            queryset = Authorizations.objects.filter(issuer=request.user.id)
+            context = {
+                'object_list': queryset
+            }
+            return render(request=request, template_name='accounts/profile_select_update.html.html', context=context)
+    else:
+        queryset = Authorizations.objects.filter(issuer=request.user.id)
+        context = {
+            'object_list': queryset
+        }
+        return render(request=request, template_name='accounts/profile_select_update.html', context=context)
 
 
 @login_required
-def userpage(request):
+def user_page(request):
     queryset = Authorizations.objects.filter(issuer=request.user.id)
     context = {
         "user": request.user,
@@ -117,13 +137,16 @@ def authorization_chart(request):
             "date").annotate(y=Count("id")).order_by("-date")
     )
     expiration_data = (Authorizations.objects.filter(issuer__user_id=request.user, expiration_time__gte=datetime.
-                                                     datetime.now(datetime.timezone.utc)).count())
+                                                     datetime.now(datetime.timezone.utc),
+                                                     start_validity__lte=datetime.datetime.now(datetime.timezone.utc)
+                                                     ).count())
     as_json = json.dumps(list(chart_data), cls=DjangoJSONEncoder)
-    context={
+    context = {
         'chart_data': as_json,
         'expiration_data': expiration_data,
     }
     return render(request=request, template_name='accounts/profile_statistics.html', context=context)
+
 
 @login_required
 def settings(request):

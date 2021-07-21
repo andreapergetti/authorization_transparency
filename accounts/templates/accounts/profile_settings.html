@@ -2,8 +2,11 @@
 {% block title %}
 Profile: Settings
 {% endblock %}
-{% block content %}
+{% block header %}
     <h2>Settings : {{ user.username }}</h2>
+    <hr>
+{% endblock %}
+{% block content %}
     <div style="margin: 25px 5px;">
     <a href="{% url 'accounts:password-change' %}">Change password</a>
         <p><b>Email</b>:
@@ -15,7 +18,7 @@ Profile: Settings
         <a href="{% url 'accounts:email-change' %}">Change email</a> </p>
         <p><b>Public key</b>:
             {% if profile.public_key %}
-                {{ profile.public_key }}
+                <textarea readonly style="width: 200px; height: 130px">{{ profile.public_key }}</textarea>
             {% else %}
                 No public key set
             {% endif %}

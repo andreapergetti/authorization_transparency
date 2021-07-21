@@ -9,7 +9,7 @@ from django.contrib.auth.models import AbstractBaseUser
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    public_key = models.CharField(max_length=300)
+    public_key = models.CharField(max_length=500, blank=True)
 
     class Meta:
         db_table = 'profile'

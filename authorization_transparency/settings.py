@@ -41,14 +41,15 @@ INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
     'crispy_forms',
     'rest_framework',
-    'rest_framework.authtoken',
+#    'rest_framework.authtoken',
     'dj_rest_auth',
     'api.apps.ApiConfig',
-    'django.contrib.sites',
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    'dj_rest_auth.registration',
+#    'django.contrib.sites',
+#    'allauth',
+#    'allauth.account',
+#    'allauth.socialaccount',
+#    'dj_rest_auth.registration',
+#    'rest_framework_simplejwt',
 ]
 
 MIDDLEWARE = [
@@ -148,10 +149,16 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.TokenAuthentication',
+#        'rest_framework.authentication.TokenAuthentication',
+#        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
 }
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 SITE_ID = 1
+
+SIMPLE_JWT = {
+    'ALGORITHM': 'RS256',
+}

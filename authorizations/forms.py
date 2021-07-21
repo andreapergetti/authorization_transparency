@@ -10,7 +10,7 @@ from .models import Authorizations
 
 
 class AuthorizationForm(ModelForm):
-    start_validity = forms.DateTimeField(help_text='format: MM/dd/yyyy HH:mm',)
+    start_validity = forms.DateTimeField(help_text='format: MM/dd/yyyy HH:mm')
     expiration_time = forms.DateTimeField(help_text='format: MM/dd/yyyy HH:mm')
 
     helper = FormHelper()
@@ -30,11 +30,13 @@ class AuthorizationForm(ModelForm):
         expiration_time = self.cleaned_data.get('expiration_time')
         start_validity = self.cleaned_data.get('start_validity')
         time_now = datetime.datetime.now(datetime.timezone.utc)
-        if expiration_time <= start_validity:
+        if start_validity is None:
+            start_validity = time_now
+        if start_validity and expiration_time and expiration_time <= start_validity:
             raise ValidationError("The expiration time is before the start validity time")
-        if expiration_time <= time_now:
+        if expiration_time and expiration_time <= time_now:
             raise ValidationError("The expiration time is before the current time")
-        if start_validity < time_now:
+        if start_validity and start_validity < time_now:
             raise ValidationError("The start validity time is before the current time")
 
     # This are the method if you want check a field a time.
@@ -48,3 +50,4 @@ class AuthorizationForm(ModelForm):
 #        data = self.cleaned_data['expiration_time']
 #        if data:
 #            raise ValidationError("You have forgotten about Fred!")
+
