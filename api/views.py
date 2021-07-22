@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from rest_framework import generics, permissions
 import jwt
 from datetime import datetime
@@ -19,7 +18,8 @@ class AuthorizationListAPIView(generics.ListAPIView):
         if server is not None:
             if client is not None:
                 queryset = Authorizations.objects.filter(server=server, client=client)
-            queryset = Authorizations.objects.filter(server=server)
+            else:
+                queryset = Authorizations.objects.filter(server=server)
         else:
             if client is not None:
                 queryset = Authorizations.objects.filter(client=client)
@@ -66,7 +66,6 @@ class AuthorizationRetrieveDestroyAPIView(generics.RetrieveDestroyAPIView):
 
     def get_queryset(self):
         queryset = Authorizations.objects.filter(issuer_id=self.request.user.pk)
-        print(queryset)
         return queryset
 
 

@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from django.test import TestCase, Client
+from django.test import TestCase
 from authorizations.models import Authorizations
 
 
@@ -8,7 +8,6 @@ class ProfileViewTest(TestCase):
     def setUp(self):
         self.credentials = {'username': 'test', 'password': 'testing'}
         self.user = User.objects.create_user(**self.credentials)
-        # Profile.objects.create(user_id=user.pk)
         self.client.login(username='test', password='testing')
 
     def test_profile_page_view_with_user_logged(self):
@@ -29,7 +28,6 @@ class ProfileViewTest(TestCase):
         message should be displayed.
         """
         response = self.client.get('/accounts/profile/')
-        #print(response.content)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "No authorization released")
         self.assertQuerysetEqual(response.context['object_list'], [])

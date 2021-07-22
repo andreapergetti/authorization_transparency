@@ -1,22 +1,19 @@
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import PasswordResetView
 from django.core.serializers.json import DjangoJSONEncoder
 from django.db.models import Count
 from django.db.models.functions import TruncDay
-from django.http import JsonResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 import datetime
 import json
-
-# Create your views here.
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, ListView
 from accounts.forms import RegisterForm, EmailChangeForm, PublicKeyChangeForm
 from authorizations.models import Authorizations, Profile
 
 
+# Create your views here.
 def register(request):
     if request.method == 'POST':
         form = RegisterForm(request.POST)
@@ -37,7 +34,6 @@ def register(request):
 
 @login_required() 
 def email_change(request):
-#    form = EmailChangeForm()
     if request.method == 'POST':
         form = EmailChangeForm(request.user, request.POST)
         if form.is_valid():
@@ -46,12 +42,9 @@ def email_change(request):
     else:
         form = EmailChangeForm(request.user)
     return render(request, 'accounts/email_change.html', {'form': form})
-#        return render_to_response("email_change.html", {'form':form},
-#                                  context_instance=RequestContext(request))
 
 @login_required() 
 def public_key_change(request):
-#    form = PublicKeyChangeForm()
     if request.method == 'POST':
         form = PublicKeyChangeForm(request.user, request.POST)
         if form.is_valid():
@@ -60,23 +53,12 @@ def public_key_change(request):
     else:
         form = PublicKeyChangeForm(request.user)
         return render(request, 'accounts/public_key_change.html', {'form': form})
-#        return render_to_response("email_change.html", {'form':form},
-#                                  context_instance=RequestContext(request))
 
 
 class ResetPasswordView(PasswordResetView):
     template_name = 'accounts/password_reset.html'
     success_url = reverse_lazy('accounts:password_reset_done')
     email_template_name = 'accounts/password_reset_email.html'
-
-
-#class SelectObjectProfile(ListView):
-#    template_name = 'accounts/profile_select_delete.html'
-#    success_url = reverse_lazy('authorizations:authorization_delete')
-
-#    def get_queryset(self):
-#        queryset = Authorizations.objects.filter(issuer=self.request.user.id)
-#        return queryset
 
 
 def select_object_delete(request):

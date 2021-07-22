@@ -3,7 +3,7 @@ import json
 
 from django.contrib import admin
 from django.core.serializers.json import DjangoJSONEncoder
-from django.db.models import Count, Sum
+from django.db.models import Count
 from django.db.models.functions import TruncDay
 from django.http import JsonResponse
 from django.urls import path
@@ -65,6 +65,4 @@ class AuthorizationReleaseAdmin(admin.ModelAdmin):
         )
 
 
-#admin.site.register(Authorizations, AuthorizationsAdmin)
-#admin.site.register(MyAuthorizations, AuthorizationReleaseAdmin)
 admin.site.register(Authorizations, AuthorizationReleaseAdmin)

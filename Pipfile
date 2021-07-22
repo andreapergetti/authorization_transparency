@@ -10,6 +10,7 @@ djangorestframework = "*"
 django-rest-auth = "*"
 dj-rest-auth = "==2.1.7"
 pyjwt = "*"
+cryptography = "*"
 
 [dev-packages]
 

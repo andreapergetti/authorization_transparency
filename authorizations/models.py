@@ -1,11 +1,9 @@
 from django.db import models
 from django.utils import timezone
-import datetime
-
 from accounts.models import Profile
+
+
 # Create your models here.
-
-
 class Authorizations(models.Model):
     issuer = models.ForeignKey(Profile, on_delete=models.PROTECT)
     server = models.CharField(max_length=32)

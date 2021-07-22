@@ -1,16 +1,14 @@
 from django import http
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import FormView, CreateView, ListView, DeleteView, UpdateView
+from django.views.generic import CreateView, ListView, DeleteView, UpdateView
 from django.views.generic.detail import DetailView
 from authorizations.models import Authorizations
 from .forms import AuthorizationForm
 
+
 # Create your views here.
-
-
 class AuthorizationDetail(LoginRequiredMixin, DetailView):
     model = Authorizations
     template_name = 'authorizations/authorization_detail.html'

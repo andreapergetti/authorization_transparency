@@ -1,7 +1,5 @@
 from django.test import TestCase
-from .models import Authorizations
 from accounts.models import User
-from django.core.exceptions import ValidationError
 from .forms import AuthorizationForm
 
 
@@ -10,7 +8,6 @@ class AuthorizationCreateTest(TestCase):
     def setUp(self):
         self.credentials = {'username': 'test', 'password': 'testing'}
         self.user = User.objects.create_user(**self.credentials)
-        # Profile.objects.create(user_id=user.pk)
         self.client.login(username='test', password='testing')
 
     def test_have_expiration_date_before_start_validity(self):
