@@ -18,6 +18,7 @@ class Profile(models.Model):
         return f'{self.user.username}'
 
 
+# New Profile object being created with the creation of a new User
 @receiver(post_save, sender=User)
 def update_profile_signal(sender, instance, created, **kwargs):
     if created:
@@ -25,7 +26,7 @@ def update_profile_signal(sender, instance, created, **kwargs):
     instance.profile.save()
 
 
-@receiver(post_save, sender=User)
-def save_user_profile(sender, instance, **kwargs):
-    instance.profile.save()
+#@receiver(post_save, sender=User)
+#def save_user_profile(sender, instance, **kwargs):
+#    instance.profile.save()
 

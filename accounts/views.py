@@ -43,6 +43,7 @@ def email_change(request):
         form = EmailChangeForm(request.user)
     return render(request, 'accounts/email_change.html', {'form': form})
 
+
 @login_required() 
 def public_key_change(request):
     if request.method == 'POST':

@@ -30,7 +30,7 @@ http://127.0.0.1:8000
 ### Authorization List:<br>
 List all authorizations
 ```
-curl '127.0.0.1:8000/api/v1/authorizations?server=Kronk'
+curl '127.0.0.1:8000/api/v1/authorizations'
 ```
 Filter authorizations for server
 ```
@@ -76,7 +76,7 @@ curl -u user1 -X DELETE http://127.0.0.1:8000/api/v1/authorizations/41/delete
 ```
 
 ### Authorization create with JWT:
-Step to create a token
+Step to create a token from a file called *jwtRS256.key*
 ```
 import jwt
 from cryptography.hazmat.primitives import serialization

@@ -12,10 +12,10 @@ from authorizations.models import Authorizations
 
 
 # Register your models here.
-class AuthorizationsAdmin(admin.ModelAdmin):
-    fields = ('issuer', 'server', 'client', 'start_validity', 'expiration_time')
-    list_display = ('issuer', 'server', 'client', 'start_validity', 'expiration_time')
-    search_fields = ['issuer__user__username', 'server', 'client', 'start_validity', 'expiration_time']
+# class AuthorizationsAdmin(admin.ModelAdmin):
+#    fields = ('issuer', 'server', 'client', 'start_validity', 'expiration_time')
+#    list_display = ('issuer', 'server', 'client', 'start_validity', 'expiration_time')
+#    search_fields = ['issuer__user__username', 'server', 'client', 'start_validity', 'expiration_time']
 
 
 class AuthorizationReleaseAdmin(admin.ModelAdmin):
