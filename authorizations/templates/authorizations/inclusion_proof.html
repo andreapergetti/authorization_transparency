@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}
+    Authorization: Inclusion Proof
+{% endblock %}
+{% block content %}
+    <h1>Inclusion Proof</h1>
+    {% if status_code and status_code != 0%}
+        <p>Leaf already present in the log</p>
+    {% endif %}
+    <p>{{ inclusion_proof }}</p>
+
+    <a href="{% url 'accounts:profile' %}">Profile</a>
+    <a href="{% url 'homepage' %}">Homepage</a>
+{% endblock %}

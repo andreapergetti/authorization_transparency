@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'dj_rest_auth',
     'api.apps.ApiConfig',
+    'trillian.apps.TrillianConfig',
 ]
 
 MIDDLEWARE = [

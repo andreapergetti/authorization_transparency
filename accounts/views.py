@@ -4,13 +4,14 @@ from django.contrib.auth.views import PasswordResetView
 from django.core.serializers.json import DjangoJSONEncoder
 from django.db.models import Count
 from django.db.models.functions import TruncDay
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponseBadRequest
 from django.shortcuts import render, redirect
 import datetime
 import json
 from django.urls import reverse_lazy
 from accounts.forms import RegisterForm, EmailChangeForm, PublicKeyChangeForm
 from authorizations.models import Authorizations, Profile
+from django.apps import apps
 
 
 # Create your views here.
@@ -24,6 +25,9 @@ def register(request):
             user.save()
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password1')
+            log_service = apps.get_app_config('trillian').service_log
+            log_service.allowed_servers[username] = user.profile.public_key
+            print(log_service.allowed_servers)
             user = authenticate(username=username, password=password)
             login(request, user)
             return redirect('homepage')
@@ -50,7 +54,11 @@ def public_key_change(request):
         form = PublicKeyChangeForm(request.user, request.POST)
         if form.is_valid():
             form.save()
+            log_service = apps.get_app_config('trillian').service_log
+            log_service.allowed_servers[form.profile.user.username] = form.cleaned_data.get('new_public_key')
             return HttpResponseRedirect("/accounts/profile/")
+        else:
+            return HttpResponseBadRequest("Form not valid")
     else:
         form = PublicKeyChangeForm(request.user)
         return render(request, 'accounts/public_key_change.html', {'form': form})

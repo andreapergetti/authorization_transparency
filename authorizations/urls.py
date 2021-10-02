@@ -8,4 +8,5 @@ urlpatterns = [
     path('authorization/<int:pk>/detail', views.AuthorizationDetail.as_view(), name='authorization_detail'),
     path('authorization/<int:pk>/delete', views.AuthorizationDelete.as_view(), name='authorization_delete'),
     path('authorization/<int:pk>/update', views.AuthorizationUpdate.as_view(), name='authorization_update'),
+    path('authorization/<int:pk>/inclusion_proof', views.InclusionProof.as_view(), name='inclusion_proof'),
 ]

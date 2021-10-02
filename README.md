@@ -1,6 +1,6 @@
 # authorization transparency
 
-## Using the code
+## Configuration
 Clone the repository
 ```
 git clone https://github.com/andreapergetti/authorization_transparency
@@ -17,6 +17,20 @@ Start virtual environment
 ```
 pipenv shell
 ```
+
+### Trillian personality
+For simple deployments, running in a container is an easy way to get up and running with a local database. To use Docker to run and interact with the personality, use:
+```
+docker-compose --compatibility -f docker-compose.yml up -d
+```
+The option --compatibility is use to limit the amount of CPU, set in the docker-compose file, that containers can use.
+
+If you want to have a web interface for the database managment of Trillian you can browse:
+```
+http://localhost:8080/
+```
+
+### Web application
 Run Django server
 ```
 python manage.py runserver
@@ -26,6 +40,25 @@ Open browser in localhost
 http://127.0.0.1:8000
 ```
 
+## How it works
+### Create token to release authorization
+First you have to log in or register in the web application and set the public key. Then you can create a token using the corresponding private key:
+```
+import jwt
+from cryptography.hazmat.primitives import serialization
+with open('jwtRS256.key', 'rb') as f:
+	key=serialization.load_pem_private_key(f.read(), password=None)
+token = jwt.encode(payload={'iss':'user2', 'client':'Lilo', 'server':'Finn', 'id':'0', 'exp':'1642882541', 'nbf':'1632882541'}, key=key, algorithm='RS256')
+```
+The field used in the encoding function are:
+- 'iss': username of the server that create token
+- 'client': name of the client
+- 'server': name of the resource server
+- 'id': identifier that user can use to enumerate his granted permission. This value is not stored in the system so the user has to take care of it, if he wants to use it. We suggest to use an incremental value.
+- 'exp': expiration time of authorization. You can pass this value as a UTC UNIX timestamp (an int) or as a datetime
+- 'nbf': time before which the authorization must not be accepted for processing. You can pass this value as a UTC UNIX timestamp (an int) or as a datetime
+
+In the repository we provide a key pair that you can use to test this API. The public key(*jwtRS256.key.pub* file) is already set as the public key of *user2* in the database that we provide. The corrisponding private key is in the file *jwtRS256.key*.
 ## Examples of using the API REST
 ### Authorization List:<br>
 List all authorizations
@@ -89,5 +122,3 @@ Create the authorization(*TOKEN* is the string obtained in the previous step)
 ```
 curl -X POST http://127.0.0.1:8000/api/v1/authorizations/jwt/create/ -H "Content-Type: application/json" -d '{"user":"user2", "token":"TOKEN"}
 ```
-
-In the repository we provide a key pair that you can use to test this API. The public key(*jwtRS256.key.pub* file) is already set as the public key of *user2* in the database that we provide.

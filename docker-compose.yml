@@ -1,0 +1,67 @@
+version: '3.1'
+services:
+
+  db:
+    image: mariadb:10.4
+    deploy:
+        resources:
+            limits:
+                cpus: '0.50'
+    environment:
+      - MYSQL_ROOT_PASSWORD=zaphod
+      - MYSQL_DATABASE=test
+      - MYSQL_USER=test
+      - MYSQL_PASSWORD=zaphod
+    volumes:
+    - "trillian-data:/var/lib/mysql"
+    restart: always
+
+  adminer:
+    image: adminer:4.7.1
+    deploy:
+        resources:
+            limits:
+                cpus: '0.50'
+    restart: always
+    ports:
+      - 8080:8080    
+
+  trillian-log-server:
+    depends_on:
+      - db
+    image: gcr.io/trillian-opensource-ci/log_server@sha256:88f723648d2fc92e9752e436ec6963b6e840956fa898cf37db026980605fc91b
+    command: [
+      "--storage_system=mysql",
+      "--mysql_uri=test:zaphod@tcp(db:3306)/test",
+      "--rpc_endpoint=0.0.0.0:8090",
+      "--http_endpoint=0.0.0.0:8091",
+      "--alsologtostderr",
+    ]
+    restart: always
+    ports:
+      - "8090:8090"
+      - "8091:8091"
+
+  trillian-log-signer:
+    image: gcr.io/trillian-opensource-ci/log_signer@sha256:0863786e7faa48839853bc9f4d4c88025331323820b88831678852afdf190cf2
+    deploy:
+        resources:
+            limits:
+                cpus: '0.50'
+    depends_on:
+      - db
+    command: [
+      "--storage_system=mysql",
+      "--mysql_uri=test:zaphod@tcp(db:3306)/test",
+      "--rpc_endpoint=0.0.0.0:8090",
+      "--http_endpoint=0.0.0.0:8091",
+      "--force_master",
+      "--alsologtostderr",
+    ]
+    restart: always
+    ports:
+      - "8092:8091"
+
+volumes:
+  trillian-data:
+    external: true

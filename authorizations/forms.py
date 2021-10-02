@@ -7,6 +7,19 @@ from django import forms
 from .models import Authorizations
 
 
+class AuthorizationForm2(forms.ModelForm):
+    token = forms.CharField(widget=forms.Textarea)
+
+    helper = FormHelper()
+    helper.form_id = 'register-form'
+    helper.form_method = 'POST'
+    helper.add_input(Submit('submit', 'Submit'))
+
+    class Meta:
+        model = Authorizations
+        fields = ('token', )
+
+
 class AuthorizationForm(ModelForm):
     start_validity = forms.DateTimeField(help_text='format: MM/dd/yyyy HH:mm')
     expiration_time = forms.DateTimeField(help_text='format: MM/dd/yyyy HH:mm')

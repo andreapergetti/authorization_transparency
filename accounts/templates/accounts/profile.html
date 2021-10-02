@@ -33,6 +33,7 @@
                     <td style="text-align: center">{{ object.client }}</td>
                     <td style="text-align: center">{{ object.start_validity|date:'Y-m-d H:i' }}</td>
                     <td style="text-align: center">{{ object.expiration_time|date:'Y-m-d H:i' }}</td>
+                    <td style="text-align: center"><a href="{% url 'authorizations:inclusion_proof' pk=object.id %}">Inclusion Proof</a> </td>
                 </tr>
             {% endfor %}
             </tbody>
