@@ -3,7 +3,7 @@
 ## Configuration
 Clone the repository
 ```
-git clone https://github.com/andreapergetti/authorization_transparency
+git clone -b personality https://github.com/andreapergetti/authorization_transparency
 ```
 Move in the directory <br>
 ```
@@ -17,8 +17,30 @@ Start virtual environment
 ```
 pipenv shell
 ```
+To fix some problem with the [protobuf binary](https://github.com/protocolbuffers/protobuf/issues/2739):
+```
+pipenv uninstall protobuf
+export PIP_NO_BINARY=protobuf && pipenv install protobuf
+```
 
 ### Trillian personality
+Create a Docker Volume to persist the database:
+```
+docker volume create trillian-data
+```
+Run an instance of MySQL using Docker:
+```
+docker run \
+--name=database \
+--env=MYSQL_ALLOW_EMPTY_PASSWORD=yes \
+--mount=source=trillian-data,target=/var/lib/mysql \
+--publish=3306:3306 mariadb:10.4
+```
+Run a script to reset the database and set up the expected tables:
+```
+./scripts/resetdb.sh
+```
+
 For simple deployments, running in a container is an easy way to get up and running with a local database. To use Docker to run and interact with the personality, use:
 ```
 docker-compose --compatibility -f docker-compose.yml up -d
@@ -59,6 +81,10 @@ The field used in the encoding function are:
 - 'nbf': time before which the authorization must not be accepted for processing. You can pass this value as a UTC UNIX timestamp (an int) or as a datetime
 
 In the repository we provide a key pair that you can use to test this API. The public key(*jwtRS256.key.pub* file) is already set as the public key of *user2* in the database that we provide. The corrisponding private key is in the file *jwtRS256.key*.
+
+User credentials in the database provided are:
+- username: *user2* &nbsp;&nbsp; password: *utente222*
+- username: *user1* &nbsp;&nbsp; password: *utente11*
 ## Examples of using the API REST
 ### Authorization List:<br>
 List all authorizations

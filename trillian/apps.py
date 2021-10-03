@@ -12,4 +12,3 @@ class TrillianConfig(AppConfig):
         profiles = Profile.objects.all()
         for profile in profiles:
             self.service_log.allowed_servers[profile.user.username] = profile.public_key
-        print(self.service_log.allowed_servers)

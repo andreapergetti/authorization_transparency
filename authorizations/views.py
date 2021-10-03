@@ -27,12 +27,6 @@ class AuthorizationDetail(LoginRequiredMixin, DetailView):
             return http.HttpResponseForbidden("Cannot delete other's authorization")
 
 
-# def auth_create(request):
-#    if request.method == 'POST':
-#        form = AuthorizationForm2(request.POST)
-#        if form.is_valid():
-
-
 class AuthorizationCreate(LoginRequiredMixin, CreateView):
     model = Authorizations
     template_name = 'authorizations/authorization_create.html'
@@ -42,8 +36,6 @@ class AuthorizationCreate(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.issuer_id = self.request.user.id
         log_service = apps.get_app_config('trillian').service_log
-        # log_service = Trillian()
-        print(f'{log_service}\n\n')
         profile = Profile.objects.get(user_id=self.request.user.id)
         token = form.data.get('token')
         try:
@@ -66,13 +58,9 @@ class AuthorizationCreate(LoginRequiredMixin, CreateView):
         form.instance.server = data["server"]
         form.instance.start_validity = datetime.datetime.utcfromtimestamp(int(data["nbf"])). \
             strftime('%Y-%m-%d %H:%M')
-        print(form.instance.start_validity)
         form.instance.expiration_time = datetime.datetime.utcfromtimestamp(int(data["exp"])). \
             strftime('%Y-%m-%d %H:%M')
-        print(form.instance.expiration_time)
         form.instance.inclusion_proof = inclusion_proof
-        print(form.instance.inclusion_proof)
-        print(f"{form.instance}\n\n")
         self.object = form.save()
         return render(request=self.request, template_name='authorizations/inclusion_proof.html',
                       context={'inclusion_proof': inclusion_proof, 'status_code': status_code})
@@ -131,6 +119,5 @@ class InclusionProof(LoginRequiredMixin, ListView):
 
     def get(self, request, *args, **kwargs):
         object = Authorizations.objects.get(id=self.kwargs['pk'])
-        print(object)
         return render(request=request, template_name=self.template_name, context={
             'inclusion_proof': object.inclusion_proof})

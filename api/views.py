@@ -77,7 +77,7 @@ class JwtCreate(APIView):
         user = self.request.data['user']
         profile = Profile.objects.get(user__username=user)
         public_key = profile.public_key
-        data = jwt.decode(jwt=token, key=public_key, algorithms=['RS256'])
+        data = jwt.decode(jwt=token, key=public_key, algorithms=['RS256', 'ES256'])
         print(data)
         start_validity = datetime.fromtimestamp(int(data['nbf']), tz=timezone.utc)
         expiration_time = datetime.fromtimestamp(int(data['exp']), tz=timezone.utc)

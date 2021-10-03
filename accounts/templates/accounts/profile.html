@@ -24,6 +24,7 @@
                 <th>CLIENT</th>
                 <th>START VALIDITY</th>
                 <th>EXPIRATION TIME</th>
+                <th>INCLUSION PROOF</th>
             </tr>
             </thead>
             <tbody>
@@ -48,7 +49,7 @@
 
     <a href="{% url 'authorizations:authorization_create' %}">Create an authorization</a>
     <a href="{% url 'accounts:profile-select-delete' %}">Delete an authorization</a>
-    <a href="{% url 'accounts:profile-select-update' %}">Update an authorization</a><br>
+    {# <a href="{% url 'accounts:profile-select-update' %}">Update an authorization</a><br> #}
     <a href="{% url 'homepage' %}">Homepage</a>
 
 {% endblock %}
