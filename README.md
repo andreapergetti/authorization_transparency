@@ -1,5 +1,8 @@
 # authorization transparency
 
+## What is authorization transparency?
+This project aim to create a Web application that allows some Authorization Server to release to Clients access grant for some Server in a transparent and verifiable manner. In this way everybody can check and observe Authorization Server's behaviour to identify who acts maliciously or release wrong authorization. In order to achieve the transparency of this process a [verifiable data structure](https://www.continusec.com/static/VerifiableDataStructures.pdf) is used to store authorization information. The particular data structure used is [Trillian](https://github.com/google/trillian).
+
 ## Using the code
 Clone the repository
 ```
