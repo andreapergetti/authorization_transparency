@@ -8,7 +8,7 @@ django = "*"
 django-crispy-forms = "*"
 djangorestframework = "*"
 django-rest-auth = "*"
-dj-rest-auth = "==2.1.7"
+dj-rest-auth = "==2.2.4"
 pyjwt = "*"
 cryptography = "*"
 
